@@ -48,7 +48,7 @@
 
     <UMain>
       <NuxtLayout>
-        
+        <p>
       </NuxtLayout>
       <USidebar v-model:open="open" :mode="mode" title="Navigation">
         <UNavigationMenu
