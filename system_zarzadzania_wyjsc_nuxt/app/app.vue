@@ -23,11 +23,8 @@
   function toggleColor() {
     colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
   }
-</script>
 
-
-<script setup>
-const supabase = useSupabaseClient()
+  const supabase = useSupabaseClient()
 
 const { data: users, pending, error, refresh } = await useAsyncData('users-list', async () => {
   const response = await supabase
@@ -38,6 +35,8 @@ const { data: users, pending, error, refresh } = await useAsyncData('users-list'
   if (response.error) throw response.error
   return response.data
 })
+
+
 </script>
 
 <template>
