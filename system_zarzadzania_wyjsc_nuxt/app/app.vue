@@ -180,7 +180,8 @@ async function wyloguj() {
 const items: NavigationMenuItem[] = [{
   label: 'Home',
   icon: 'i-lucide-house',
-  active: true
+  active: true,
+  to:"/"
 }, {
   label: 'Inbox',
   icon: 'i-lucide-inbox',
@@ -202,9 +203,14 @@ function toggleColor() {
 
 </script>
 <template>
-  <UHeader  title="Witamy na E-Wyścia" class=" bg-blue-400 dark:bg-blue-900" >
-      <template #left>
-          <!-- <img src="LOGO_SZKOŁY.png" alt="logo"> -->
+  <UHeader class=" bg-blue-400 dark:bg-blue-900" >
+      <template #title class=" flex items-center">
+        <div class=" flex items-center">
+          <AppLogo></AppLogo>
+          <h1 class="ms-3 text-2xl ">Witamy na E-Wyścia</h1>
+        </div>
+          
+          <!-- <img src="/LOGO_SZKOŁY.png" alt="logo"> -->
           <!-- <img src="" class=" h-min w-min " alt="logo"> -->
       </template>
       <template #right>
@@ -227,6 +233,7 @@ function toggleColor() {
   <NuxtPage></NuxtPage>
   <USidebar v-show="loggedIn" v-model:open="open" :mode="mode" title="Navigation">
     <UNavigationMenu
+      v-show="loggedIn"
       :items="items"
       orientation="vertical"
       :ui="{ link: 'p-1.5 overflow-hidden' }"
