@@ -212,6 +212,7 @@ function toggleColor() {
   <NuxtPage></NuxtPage>
   <USidebar v-show="loggedIn" v-model:open="open" :mode="mode" title="Navigation">
     <UNavigationMenu
+      v-show="loggedIn"
       :items="items"
       orientation="vertical"
       :ui="{ link: 'p-1.5 overflow-hidden' }"
