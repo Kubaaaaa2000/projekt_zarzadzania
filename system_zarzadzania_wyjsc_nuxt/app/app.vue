@@ -103,7 +103,7 @@ const fields: AuthFormField[] = [{
     </UPageCard>
   </div>
       <NuxtLayout>
-        
+        <p>
       </NuxtLayout>
       <USidebar v-model:open="open" :mode="mode" title="Navigation">
         <UNavigationMenu
@@ -157,6 +157,71 @@ const fields: AuthFormField[] = [{
   </UApp>
   
 </template> -->
+<script setup lang="ts">
+import type { NavigationMenuItem, SidebarProps } from '@nuxt/ui'
+
+const loggedIn = ref(useSupabaseUser())
+
+const mode = ref<SidebarProps['mode']>('slideover')
+
+const open = ref(true)
+
+const items: NavigationMenuItem[] = [{
+  label: 'Home',
+  icon: 'i-lucide-house',
+  active: true
+}, {
+  label: 'Inbox',
+  icon: 'i-lucide-inbox',
+  badge: '4'
+}, {
+  label: 'Contacts',
+  icon: 'i-lucide-users'
+}]
+
+const colorMode = useColorMode()
+
+function toggleColor() {
+  colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
+}
+
+</script>
 <template>
+  <UHeader  title="Witamy na E-Wyścia" class=" bg-blue-400 dark:bg-blue-900" >
+      <template #left>
+          <!-- <img src="LOGO_SZKOŁY.png" alt="logo"> -->
+          <!-- <img src="" class=" h-min w-min " alt="logo"> -->
+      </template>
+      <template #right>
+        <UButton
+          :icon="colorMode.value === 'dark' ? 'i-heroicons-moon' : 'i-heroicons-sun'"
+          color="neutral"
+          variant="ghost"
+          @click="toggleColor"
+        />
+        <UButton
+          v-show="loggedIn"
+          icon="i-lucide-panel-left"
+          color="neutral"
+          variant="ghost"
+          aria-label="Toggle sidebar"
+          @click="open = !open"
+        />
+      </template>
+    </UHeader>
   <NuxtPage></NuxtPage>
+  <USidebar v-show="loggedIn" v-model:open="open" :mode="mode" title="Navigation">
+    <UNavigationMenu
+      :items="items"
+      orientation="vertical"
+      :ui="{ link: 'p-1.5 overflow-hidden' }"
+    />
+  </USidebar>
+  <UFooter>
+    <template #left>
+      <p class="text-muted text-sm">
+        Copyright © {{ new Date().getFullYear() }}
+      </p>
+    </template>
+  </UFooter>
 </template>

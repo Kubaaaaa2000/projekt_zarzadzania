@@ -84,27 +84,7 @@ async function onSubmit(payload: FormSubmitEvent<FormSchema>) {
 
 <template>
   <UApp>
-    <UHeader  title="Witamy na E-Wyścia" class=" bg-blue-400 dark:bg-blue-900" >
-      <template #left>
-          <!-- <img src="LOGO_SZKOŁY.png" alt="logo"> -->
-          <!-- <img src="" class=" h-min w-min " alt="logo"> -->
-      </template>
-      <template #right>
-        <UButton
-          :icon="colorMode.value === 'dark' ? 'i-heroicons-moon' : 'i-heroicons-sun'"
-          color="neutral"
-          variant="ghost"
-          @click="toggleColor"
-        />
-        <UButton
-          icon="i-lucide-panel-left"
-          color="neutral"
-          variant="ghost"
-          aria-label="Toggle sidebar"
-          @click="open = !open"
-        />
-      </template>
-    </UHeader>
+    
 
     <UMain class="flex flex-col items-center justify-center">
       <div class="flex flex-col items-center justify-center gap-4 p-4 h-full">
@@ -124,22 +104,10 @@ async function onSubmit(payload: FormSubmitEvent<FormSchema>) {
 
       <NuxtLayout />
 
-      <USidebar v-model:open="open" :mode="mode" title="Navigation">
-        <UNavigationMenu
-          :items="items"
-          orientation="vertical"
-          :ui="{ link: 'p-1.5 overflow-hidden' }"
-        />
-      </USidebar>
+      
     </UMain>
 
 
-    <UFooter>
-      <template #left>
-        <p class="text-muted text-sm">
-          Copyright © {{ new Date().getFullYear() }}
-        </p>
-      </template>
-    </UFooter>
+    
   </UApp>
 </template>

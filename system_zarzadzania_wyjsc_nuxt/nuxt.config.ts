@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['@nuxt/ui','@nuxtjs/color-mode', '@nuxtjs/supabase'],
+  modules: ['@nuxt/ui', '@nuxtjs/supabase'],
   colorMode: {
     classSuffix: '' // Wymagane przez Tailwind v4 / Nuxt UI v3
   },
