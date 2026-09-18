@@ -18,7 +18,7 @@ const { data: users, pending, error, refresh } = await useAsyncData('users-list'
     <div class="flex justify-between items-center mb-5">
       <h1 class="text-2xl font-bold">Lista Użytkowników</h1>
       <button
-        class="bg-[#00dc82] hover:bg-[#00b368] disabled:bg-gray-300 text-white border-none py-2.5 px-4 rounded-md font-bold cursor-pointer transition-colors duration-200 disabled:cursor-not-allowed"
+        class=" bg-green-400 hover:bg-[#00b368] disabled:bg-gray-300 text-white border-none py-2.5 px-4 rounded-md font-bold cursor-pointer transition-colors duration-200 disabled:cursor-not-allowed"
         :disabled="pending"
         @click="refresh"
       >

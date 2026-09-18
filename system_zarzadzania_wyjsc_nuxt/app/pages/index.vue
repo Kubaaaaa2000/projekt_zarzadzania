@@ -85,7 +85,11 @@ async function onSubmit(payload: FormSubmitEvent<FormSchema>) {
 
 <template>
   <UApp>
-    <UHeader title="witamy na stronie" class="bg-blue-400 dark:bg-blue-900">
+    <UHeader  title="Witamy na E-Wyścia" class=" bg-blue-400 dark:bg-blue-900" >
+      <template #left>
+          <!-- <img src="LOGO_SZKOŁY.png" alt="logo"> -->
+          <!-- <img src="" class=" h-min w-min " alt="logo"> -->
+      </template>
       <template #right>
         <UButton
           :icon="colorMode.value === 'dark' ? 'i-heroicons-moon' : 'i-heroicons-sun'"
@@ -130,40 +134,12 @@ async function onSubmit(payload: FormSubmitEvent<FormSchema>) {
       </USidebar>
     </UMain>
 
-    <USeparator icon="i-simple-icons-nuxtdotjs" type="dashed" class="h-px" />
 
     <UFooter>
       <template #left>
         <p class="text-muted text-sm">
           Copyright © {{ new Date().getFullYear() }}
         </p>
-      </template>
-
-      <template #right>
-        <UButton
-          icon="i-simple-icons-discord"
-          color="neutral"
-          variant="ghost"
-          to="https://go.nuxt.com/discord"
-          target="_blank"
-          aria-label="Discord"
-        />
-        <UButton
-          icon="i-simple-icons-x"
-          color="neutral"
-          variant="ghost"
-          to="https://go.nuxt.com/x"
-          target="_blank"
-          aria-label="X"
-        />
-        <UButton
-          icon="i-simple-icons-github"
-          color="neutral"
-          variant="ghost"
-          to="https://github.com/nuxt/nuxt"
-          target="_blank"
-          aria-label="GitHub"
-        />
       </template>
     </UFooter>
   </UApp>
