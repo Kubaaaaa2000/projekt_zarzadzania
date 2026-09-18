@@ -159,12 +159,23 @@ const fields: AuthFormField[] = [{
 </template> -->
 <script setup lang="ts">
 import type { NavigationMenuItem, SidebarProps } from '@nuxt/ui'
+const supabase = useSupabaseClient()
+const toast = useToast()
 
 const loggedIn = ref(useSupabaseUser())
 
 const mode = ref<SidebarProps['mode']>('slideover')
 
 const open = ref(true)
+
+async function wyloguj() {
+  const { error } = await supabase.auth.signOut()
+  if (error) {
+    toast.add({ title: 'Błąd wylogowania', description: error.message, color: 'error' })
+    return
+  }
+  await navigateTo('/')
+}
 
 const items: NavigationMenuItem[] = [{
   label: 'Home',
@@ -177,6 +188,10 @@ const items: NavigationMenuItem[] = [{
 }, {
   label: 'Contacts',
   icon: 'i-lucide-users'
+}, {
+  label: 'Wyloguj',
+  icon: 'i-lucide-log-out',
+  onSelect: wyloguj
 }]
 
 const colorMode = useColorMode()
