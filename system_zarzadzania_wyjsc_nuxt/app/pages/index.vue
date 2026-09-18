@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import type { NavigationMenuItem, SidebarProps, FormSubmitEvent, AuthFormField } from '@nuxt/ui'
 
