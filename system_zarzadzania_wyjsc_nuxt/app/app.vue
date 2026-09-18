@@ -1,5 +1,7 @@
-<script setup lang="ts">
-  import type { NavigationMenuItem, SidebarProps } from '@nuxt/ui'
+<!-- <script setup lang="ts">
+  import type { NavigationMenuItem, SidebarProps,FormSubmitEvent, AuthFormField } from '@nuxt/ui'
+  //import * as z from 'zod'
+
 
   // Ignore the props for the example
   // defineProps<Pick<SidebarProps, 'mode'>>()
@@ -23,8 +25,48 @@
   function toggleColor() {
     colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
   }
-</script>
 
+//   const supabase = useSupabaseClient()
+
+// const { data: users, pending, error, refresh } = await useAsyncData('users-list', async () => {
+//   const response = await supabase
+//     .from('uzytkownicy')
+//     .select('id, name, surname')
+
+
+//   if (response.error) throw response.error
+//   return response.data
+
+  
+
+const toast = useToast()
+
+const fields: AuthFormField[] = [{
+  name: 'login',
+  type: 'login',
+  label: 'login',
+  placeholder: 'Enter your login',
+  required: true
+}, {
+  name: 'password',
+  label: 'Password',
+  type: 'password',
+  placeholder: 'Enter your password',
+  required: true
+}, {
+  name: 'remember',
+  label: 'Remember me',
+  type: 'checkbox'
+}]
+
+
+
+
+
+
+
+
+</script>
 
 <template>
   <UApp>
@@ -46,7 +88,20 @@
       </template>
     </UHeader>
 
-    <UMain>
+    <UMain class="flex items-center justify-center">
+      <div class="flex flex-col items-center justify-center gap-4 p-4 h-full">
+    <UPageCard class="w-full max-w-md">
+      <UAuthForm
+       
+        title="Login"
+        description="Enter your credentials to access your account."
+        icon="i-lucide-user"
+        :fields="fields"
+        
+        @submit="onSubmit"
+      />
+    </UPageCard>
+  </div>
       <NuxtLayout>
         <p>
       </NuxtLayout>
@@ -57,6 +112,9 @@
           :ui="{ link: 'p-1.5 overflow-hidden' }"
         />
       </USidebar>
+
+       
+
     </UMain>
 
     <USeparator icon="i-simple-icons-nuxtdotjs" type="dashed" class="h-px" />
@@ -97,4 +155,8 @@
       </template>
     </UFooter>
   </UApp>
+  
+</template> -->
+<template>
+  <NuxtPage></NuxtPage>
 </template>
