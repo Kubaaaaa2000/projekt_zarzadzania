@@ -174,7 +174,7 @@ async function wyloguj() {
     toast.add({ title: 'Błąd wylogowania', description: error.message, color: 'error' })
     return
   }
-  await navigateTo('/')
+ reloadNuxtApp({ path: '/' })
 }
 
 async function konto(){

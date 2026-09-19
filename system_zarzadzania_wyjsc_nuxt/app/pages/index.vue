@@ -78,7 +78,7 @@ async function onSubmit(payload: FormSubmitEvent<FormSchema>) {
     color: 'success',
   })
 
-  await navigateTo('/klasy')
+  reloadNuxtApp({ path: '/klasy' })
 }
 </script>
 
