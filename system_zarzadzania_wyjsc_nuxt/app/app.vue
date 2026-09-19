@@ -177,6 +177,10 @@ async function wyloguj() {
   await navigateTo('/')
 }
 
+async function konto(){
+  await navigateTo("/profil")
+}
+
 const items: NavigationMenuItem[] = [{
   label: 'Home',
   icon: 'i-lucide-house',
@@ -193,6 +197,10 @@ const items: NavigationMenuItem[] = [{
   label: 'Wyloguj',
   icon: 'i-lucide-log-out',
   onSelect: wyloguj
+},{
+  label: 'Konto',
+  icon: 'i-lucide-user',
+  onSelect: konto
 }]
 
 const colorMode = useColorMode()
@@ -207,7 +215,7 @@ function toggleColor() {
       <template #title class=" flex items-center">
         <div class=" flex items-center">
           <AppLogo></AppLogo>
-          <h1 class="ms-3 text-2xl ">Witamy na E-Wyścia</h1>
+          <h1 class="ms-3 text-2xl ">Witamy na E-Wyjścia</h1>
         </div>
           
           <!-- <img src="/LOGO_SZKOŁY.png" alt="logo"> -->
