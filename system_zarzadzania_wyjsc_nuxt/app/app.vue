@@ -174,7 +174,11 @@ async function wyloguj() {
     toast.add({ title: 'Błąd wylogowania', description: error.message, color: 'error' })
     return
   }
-  await navigateTo('/')
+ reloadNuxtApp({ path: '/' })
+}
+
+async function konto(){
+  await navigateTo("/profil")
 }
 
 const items: NavigationMenuItem[] = [{
@@ -193,6 +197,10 @@ const items: NavigationMenuItem[] = [{
   label: 'Wyloguj',
   icon: 'i-lucide-log-out',
   onSelect: wyloguj
+},{
+  label: 'Konto',
+  icon: 'i-lucide-user',
+  onSelect: konto
 }]
 
 const colorMode = useColorMode()
@@ -207,7 +215,7 @@ function toggleColor() {
       <template #title class=" flex items-center">
         <div class=" flex items-center">
           <AppLogo></AppLogo>
-          <h1 class="ms-3 text-2xl ">Witamy na E-Wyścia</h1>
+          <h1 class="ms-3 text-2xl ">Witamy na E-Wyjścia</h1>
         </div>
           
           <!-- <img src="/LOGO_SZKOŁY.png" alt="logo"> -->

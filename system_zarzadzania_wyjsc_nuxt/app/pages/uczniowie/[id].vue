@@ -32,7 +32,7 @@ const { data: uczniowie, pending, error, refresh } = await useAsyncData(`uczniow
 <template>
   <div class="max-w-3xl mx-auto my-10 px-5 font-sans text-gray-800">
     <div class="flex justify-between items-center mb-5">
-      <h1 class="text-2xl font-bold">
+      <h1 class="text-2xl font-bold text-default">
         Uczniowie klasy {{ klasa?.nazwa }}
       </h1>
       <button
@@ -68,7 +68,7 @@ const { data: uczniowie, pending, error, refresh } = await useAsyncData(`uczniow
         </thead>
         <tbody class="divide-y divide-gray-100">
           <tr v-for="uczen in uczniowie" :key="uczen.id" class="hover:bg-gray-50 transition-colors">
-            <td class="py-3 px-4">{{ uczen.id}}</td>
+            <td class="py-3 px-4">{{uczen.id%20>0?uczen.id%20 : uczen.id%20+20 }}</td>
             <td class="py-3 px-4">{{ uczen.name }}</td>
             <td class="py-3 px-4">{{ uczen.surname }}</td>
             <td>--:--</td>

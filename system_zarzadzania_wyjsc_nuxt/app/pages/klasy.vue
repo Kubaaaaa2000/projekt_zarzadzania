@@ -5,9 +5,7 @@ const { data: users, pending, error, refresh } = await useAsyncData('users-list'
   const response = await supabase
     .from('klasy')
     .select('id, nazwa')
-
-  console.log('Odpowiedź z Supabase:', response)
-
+    
   if (response.error) throw response.error
   return response.data
 })
@@ -16,7 +14,7 @@ const { data: users, pending, error, refresh } = await useAsyncData('users-list'
 <template>
   <div class="max-w-3xl mx-auto my-10 px-5 font-sans text-gray-800">
     <div class="flex justify-between items-center mb-5">
-      <h1 class="text-2xl font-bold text-default">Lista Użytkowników</h1>
+      <h1 class="text-2xl font-bold text-default">Lista klas</h1>
       <button
         class=" bg-green-400 hover:bg-[#00b368] disabled:bg-gray-300 text-white border-none py-2.5 px-4 rounded-md font-bold cursor-pointer transition-colors duration-200 disabled:cursor-not-allowed"
         :disabled="pending"
@@ -59,7 +57,7 @@ const { data: users, pending, error, refresh } = await useAsyncData('users-list'
         </tbody>
       </table>
 
-      <p v-else class="p-5 text-center text-gray-500">Brak użytkowników w bazie danych.</p>
+      <p v-else class="p-5 text-center text-gray-500">Brak klas w bazie danych.</p>
     </div>
   </div>
   <NuxtLink to="/">home page</NuxtLink>
