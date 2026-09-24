@@ -66,7 +66,7 @@ async function onSubmit() {
       
       <h1 v-if="user">{{ user.email }}</h1>
 
-      <UButton
+      <UButton class="text-center"
         label="Zmień hasło"
         color="success"
         @click="togglForm"

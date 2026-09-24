@@ -60,5 +60,5 @@ const { data: users, pending, error, refresh } = await useAsyncData('users-list'
       <p v-else class="p-5 text-center text-gray-500">Brak klas w bazie danych.</p>
     </div>
   </div>
-  <NuxtLink to="/">home page</NuxtLink>
+
 </template>

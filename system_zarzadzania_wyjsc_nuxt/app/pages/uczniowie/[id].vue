@@ -1,7 +1,7 @@
 <script setup lang="ts">
-
 const route = useRoute()
 const supabase = useSupabaseClient()
+const user = useSupabaseUser()
 
 // Dane samej klasy (nazwa itp.)
 const { data: klasa } = await useAsyncData(`klasa-${route.params.id}`, async () => {
@@ -22,11 +22,80 @@ const { data: uczniowie, pending, error, refresh } = await useAsyncData(`uczniow
     .select('id, name, surname')
     .eq('klasa_id', route.params.id)
 
-  console.log('Odpowiedź z Supabase:', response)
-
   if (response.error) throw response.error
   return response.data
 })
+
+// Dzisiejsze wpisy z rejestru (dla tej klasy)
+const { data: dzisiejszeWyjscia, refresh: odswiezRejestr } = await useAsyncData(`rejestr-dzis-${route.params.id}`, async () => {
+  const dzisiaj = new Date().toISOString().split('T')[0]
+
+  const { data, error } = await supabase
+    .from('rejestr')
+    .select('*')
+    .filter('wyjscie', 'gte', `${dzisiaj}T00:00:00`)
+    .filter('wyjscie', 'lt', `${dzisiaj}T23:59:59.999`)
+
+  if (error) throw error
+  return data
+})
+
+// Znajduje najnowszy (jeszcze niezakończony) wpis danego ucznia z dzisiaj
+function wpisUcznia(uczenId: number) {
+  if (!dzisiejszeWyjscia.value) return null
+  return dzisiejszeWyjscia.value
+    .filter(w => w.uczen_id === uczenId)
+    .sort((a, b) => new Date(b.wyjscie).getTime() - new Date(a.wyjscie).getTime())[0] || null
+}
+
+function formatGodzina(iso: string | null) {
+  if (!iso) return '--:--'
+  return new Date(iso).toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })
+}
+
+const toast = useToast()
+
+async function dodajWyjscie(uczen: { id: number }) {
+  if (!user.value) {
+    toast.add({ title: 'Musisz być zalogowany', color: 'error' })
+    return
+  }
+
+  const { data, error } = await supabase
+    .from('rejestr')
+    .insert({
+      uczen_id: uczen.id,
+      wyjscie: new Date().toISOString(),
+      powrot: null,
+      powod: 'wc',
+      nauczyciel_id: user.value.id,
+    })
+    .select()
+    .single()
+
+  if (error) {
+    toast.add({ title: 'Błąd rejestrowania wyjścia', description: error.message, color: 'error' })
+    return
+  }
+
+  toast.add({ title: 'Zarejestrowano wyjście', color: 'success' })
+  odswiezRejestr()
+}
+
+async function zarejestrujPowrot(wpisId: number) {
+  const { error } = await supabase
+    .from('rejestr')
+    .update({ powrot: new Date().toISOString() })
+    .eq('id', wpisId)
+
+  if (error) {
+    toast.add({ title: 'Błąd rejestrowania powrotu', description: error.message, color: 'error' })
+    return
+  }
+
+  toast.add({ title: 'Zarejestrowano powrót', color: 'success' })
+  odswiezRejestr()
+}
 </script>
 
 <template>
@@ -60,21 +129,37 @@ const { data: uczniowie, pending, error, refresh } = await useAsyncData(`uczniow
             <th class="py-3 px-4 font-semibold text-gray-700">ID</th>
             <th class="py-3 px-4 font-semibold text-gray-700">Imię</th>
             <th class="py-3 px-4 font-semibold text-gray-700">Nazwisko</th>
-            <th>godzina wyjścia</th>
-            <th>godzina powrotu</th>
-            <th  class="p-4">wyjście</th>
-            <th class="p-4">powrót</th>
+            <th class="p-4 text-center">godzina wyjścia</th>
+            <th class="p-4 text-center">godzina powrotu</th>
+            <th class="p-4 text-center">wyjście</th>
+            <th class="p-4 text-center">powrót</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-100">
           <tr v-for="uczen in uczniowie" :key="uczen.id" class="hover:bg-gray-50 transition-colors">
-            <td class="py-3 px-4">{{uczen.id%20>0?uczen.id%20 : uczen.id%20+20 }}</td>
+            <td class="py-3 px-4">{{ uczen.id % 20 > 0 ? uczen.id % 20 : uczen.id % 20 + 20 }}</td>
             <td class="py-3 px-4">{{ uczen.name }}</td>
             <td class="py-3 px-4">{{ uczen.surname }}</td>
-            <td>--:--</td>
-            <td>--:--</td> 
-            <td><button class="bg-blue-500 rounded-xl p-2">wyjscie</button></td>
-            <td><button class="bg-red-500 rounded-xl p-2">powrót</button></td>
+            <td class="text-center">{{ formatGodzina(wpisUcznia(uczen.id)?.wyjscie) }}</td>
+            <td class="text-center">{{ formatGodzina(wpisUcznia(uczen.id)?.powrot) }}</td>
+            <td>
+              <UButton
+                class="bg-blue-500 rounded-xl p-2 text-center"
+                :disabled="!!wpisUcznia(uczen.id) && !wpisUcznia(uczen.id)?.powrot"
+                @click="dodajWyjscie(uczen)"
+              >
+                wyjście
+              </UButton>
+            </td>
+            <td>
+              <UButton
+                class="bg-red-500 rounded-xl p-2 text-center disabled:bg-gray-300"
+                :disabled="!wpisUcznia(uczen.id) || !!wpisUcznia(uczen.id)?.powrot"
+                @click="zarejestrujPowrot(wpisUcznia(uczen.id)!.id)"
+              >
+                powrót
+              </UButton>
+            </td>
           </tr>
         </tbody>
       </table>
