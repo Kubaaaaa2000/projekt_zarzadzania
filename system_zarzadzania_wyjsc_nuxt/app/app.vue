@@ -184,23 +184,28 @@ async function konto(){
 const items: NavigationMenuItem[] = [{
   label: 'Home',
   icon: 'i-lucide-house',
-  active: true,
   to:"/"
 }, {
-  label: 'Inbox',
+  label: 'Klasy',
   icon: 'i-lucide-inbox',
-  badge: '4'
-}, {
-  label: 'Contacts',
-  icon: 'i-lucide-users'
-}, {
-  label: 'Wyloguj',
-  icon: 'i-lucide-log-out',
-  onSelect: wyloguj
-},{
+  // badge: '4',
+  to:"/klasy"
+}, 
+// {
+//   label: 'Contacts',
+//   icon: 'i-lucide-users'
+// }, ,
+{
   label: 'Konto',
   icon: 'i-lucide-user',
-  onSelect: konto
+  to:"/profil",
+  // onSelect: konto
+},
+{
+  label: 'Wyloguj',
+  icon: 'i-lucide-log-out',
+  onSelect: wyloguj,
+  to:"/"
 }]
 
 const colorMode = useColorMode()
@@ -221,14 +226,14 @@ function toggleColor() {
           <!-- <img src="/LOGO_SZKOŁY.png" alt="logo"> -->
           <!-- <img src="" class=" h-min w-min " alt="logo"> -->
       </template>
-      <template #right>
+      <template #toggle>
         <UButton
           :icon="colorMode.value === 'dark' ? 'i-heroicons-moon' : 'i-heroicons-sun'"
           color="neutral"
           variant="ghost"
           @click="toggleColor"
         />
-        <UButton
+        <UButton 
           v-show="loggedIn"
           icon="i-lucide-panel-left"
           color="neutral"
@@ -244,7 +249,10 @@ function toggleColor() {
       v-show="loggedIn"
       :items="items"
       orientation="vertical"
-      :ui="{ link: 'p-1.5 overflow-hidden' }"
+      :ui="{
+         link: 'p-1.5 overflow-hidden text-md max-md:text-2xl',
+        // link: 'text-md text-slate-500 hover:text-slate-950 data-[active=true]:text-emerald-600'
+       }"
     />
   </USidebar>
   <UFooter>
