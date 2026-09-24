@@ -153,7 +153,7 @@ async function zarejestrujPowrot(wpisId: number) {
             </td>
             <td>
               <UButton
-                class="bg-red-500 rounded-xl p-2 text-center disabled:bg-gray-300"
+                class="bg-red-500 rounded-xl p-2 text-center disabled:bg-gray-300 hover:bg-red-400"
                 :disabled="!wpisUcznia(uczen.id) || !!wpisUcznia(uczen.id)?.powrot"
                 @click="zarejestrujPowrot(wpisUcznia(uczen.id)!.id)"
               >
