@@ -187,7 +187,7 @@ const items: NavigationMenuItem[] = [{
   to:"/"
 }, {
   label: 'Klasy',
-  icon: 'i-lucide-inbox',
+  icon: 'i-lucide-clipboard-paste',
   // badge: '4',
   to:"/klasy"
 }, 
