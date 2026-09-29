@@ -16,7 +16,12 @@ function togglForm() {
   noweHaslo.value = ''
   powtorzHaslo.value = ''
 }
+ const { data: userData, error: userError } = await supabase
+    .from('uzytkownicy')
+    .select('name, surname')
+    .eq('id_auth', user.value.sub)
 
+  console.log(userData)
 async function onSubmit() {
   if (noweHaslo.value !== powtorzHaslo.value) {
     toast.add({
@@ -64,7 +69,7 @@ async function onSubmit() {
   <div class="flex flex-col items-center justify-center gap-4 p-4 h-full">
     <UPageCard class="w-full max-w-md text-center">
       
-      <h1 v-if="user">{{ user.email }}</h1>
+      <h1 v-if="user">{{ userData[0].name }} {{ userData[0].surname }}</h1>
 
       <UButton class="text-center"
         label="Zmień hasło"

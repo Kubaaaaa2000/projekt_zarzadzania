@@ -61,6 +61,15 @@ async function dodajWyjscie(uczen: { id: number }) {
     return
   }
 
+  const { data: userData, error: userError } = await supabase
+    .from('uzytkownicy')
+    .select('id')
+    .eq('id_auth', user.value.sub)
+
+  if (userError) {
+    console.error('Szczegóły błędu:', userError)
+  }
+
   const { data, error } = await supabase
     .from('rejestr')
     .insert({
@@ -68,7 +77,7 @@ async function dodajWyjscie(uczen: { id: number }) {
       wyjscie: new Date().toISOString(),
       powrot: null,
       powod: 'wc',
-      nauczyciel_id: user.value.id,
+      nauczyciel_id: userData[0].id,
     })
     .select()
     .single()
@@ -104,13 +113,13 @@ async function zarejestrujPowrot(wpisId: number) {
       <h1 class="text-2xl font-bold text-default">
         Uczniowie klasy {{ klasa?.nazwa }}
       </h1>
-      <button
+      <UButton
         class="bg-[#00dc82] hover:bg-[#00b368] disabled:bg-gray-300 text-white border-none py-2.5 px-4 rounded-md font-bold cursor-pointer transition-colors duration-200 disabled:cursor-not-allowed"
         :disabled="pending"
         @click="refresh"
       >
         {{ pending ? 'Ładowanie...' : 'Odśwież' }}
-      </button>
+      </UButton>
     </div>
 
     <div v-if="pending" class="p-4 bg-gray-100 rounded-md text-center text-gray-600">
@@ -122,7 +131,7 @@ async function zarejestrujPowrot(wpisId: number) {
       <p class="mt-1">{{ error.message }}</p>
     </div>
 
-    <div v-else class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+    <div v-else class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm overflow-x-auto">
       <table v-if="uczniowie && uczniowie.length > 0" class="w-full border-collapse text-left">
         <thead>
           <tr class="bg-gray-50 border-b border-gray-200">
