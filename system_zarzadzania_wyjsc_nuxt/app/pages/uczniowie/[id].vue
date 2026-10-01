@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { SelectItem } from '@nuxt/ui'
+
 const route = useRoute()
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
@@ -76,7 +78,7 @@ async function dodajWyjscie(uczen: { id: number }) {
       uczen_id: uczen.id,
       wyjscie: new Date().toISOString(),
       powrot: null,
-      powod: 'wc',
+      powod: value,
       nauczyciel_id: userData[0].id,
     })
     .select()
@@ -105,6 +107,26 @@ async function zarejestrujPowrot(wpisId: number) {
   toast.add({ title: 'Zarejestrowano powrót', color: 'success' })
   odswiezRejestr()
 }
+
+const items = ref<SelectItem[]>([
+  {
+    label: 'wc',
+    value: 'wc'
+  },
+  {
+    label: 'sekretariat',
+    value: 'sekretariat'
+  },
+  {
+    label: 'pielęgniarka',
+    value: 'pielegniarka'
+  },
+  {
+    label: 'inne',
+    value: 'inne'
+  }
+])
+const value = ref("wc")
 </script>
 
 <template>
@@ -140,7 +162,8 @@ async function zarejestrujPowrot(wpisId: number) {
             <th class="py-3 px-4 font-semibold text-gray-700">Nazwisko</th>
             <th class="p-4 text-center">godzina wyjścia</th>
             <th class="p-4 text-center">godzina powrotu</th>
-            <th class="p-4 text-center">wyjście</th>
+           
+            <th class="p-4 text-center">wyjście <USelect :ui="{ content: 'w-auto min-w-(--reka-select-trigger-width)'}" class="w-auto" v-model="value" :items="items"></USelect></th>
             <th class="p-4 text-center">powrót</th>
           </tr>
         </thead>
@@ -151,7 +174,8 @@ async function zarejestrujPowrot(wpisId: number) {
             <td class="py-3 px-4">{{ uczen.surname }}</td>
             <td class="text-center">{{ formatGodzina(wpisUcznia(uczen.id)?.wyjscie) }}</td>
             <td class="text-center">{{ formatGodzina(wpisUcznia(uczen.id)?.powrot) }}</td>
-            <td>
+            
+            <td class="text-center">
               <UButton
                 class="bg-blue-500 rounded-xl p-2 text-center"
                 :disabled="!!wpisUcznia(uczen.id) && !wpisUcznia(uczen.id)?.powrot"
@@ -160,7 +184,7 @@ async function zarejestrujPowrot(wpisId: number) {
                 wyjście
               </UButton>
             </td>
-            <td>
+            <td class="text-center">
               <UButton
                 class="bg-red-500 rounded-xl p-2 text-center disabled:bg-gray-300 hover:bg-red-400"
                 :disabled="!wpisUcznia(uczen.id) || !!wpisUcznia(uczen.id)?.powrot"
