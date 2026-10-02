@@ -5,6 +5,26 @@ const route = useRoute()
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
 
+const items = ref<SelectItem[]>([
+  {
+    label: 'wc',
+    value: 'wc'
+  },
+  {
+    label: 'sekretariat',
+    value: 'sekretariat'
+  },
+  {
+    label: 'pielęgniarka',
+    value: 'pielegniarka'
+  },
+  {
+    label: 'inne',
+    value: 'inne'
+  }
+])
+const reson = ref("wc")
+
 // Dane samej klasy (nazwa itp.)
 const { data: klasa } = await useAsyncData(`klasa-${route.params.id}`, async () => {
   const { data, error } = await supabase
@@ -78,7 +98,7 @@ async function dodajWyjscie(uczen: { id: number }) {
       uczen_id: uczen.id,
       wyjscie: new Date().toISOString(),
       powrot: null,
-      powod: value,
+      powod: reson.value,
       nauczyciel_id: userData[0].id,
     })
     .select()
@@ -107,30 +127,10 @@ async function zarejestrujPowrot(wpisId: number) {
   toast.add({ title: 'Zarejestrowano powrót', color: 'success' })
   odswiezRejestr()
 }
-
-const items = ref<SelectItem[]>([
-  {
-    label: 'wc',
-    value: 'wc'
-  },
-  {
-    label: 'sekretariat',
-    value: 'sekretariat'
-  },
-  {
-    label: 'pielęgniarka',
-    value: 'pielegniarka'
-  },
-  {
-    label: 'inne',
-    value: 'inne'
-  }
-])
-const value = ref("wc")
 </script>
 
 <template>
-  <div class="max-w-3xl mx-auto my-10 px-5 font-sans text-gray-800">
+  <div class="max-w-4xl mx-auto my-10 px-5 font-sans text-gray-800">
     <div class="flex justify-between items-center mb-5">
       <h1 class="text-2xl font-bold text-default">
         Uczniowie klasy {{ klasa?.nazwa }}
@@ -163,7 +163,7 @@ const value = ref("wc")
             <th class="p-4 text-center">godzina wyjścia</th>
             <th class="p-4 text-center">godzina powrotu</th>
            
-            <th class="p-4 text-center">wyjście <USelect :ui="{ content: 'w-auto min-w-(--reka-select-trigger-width)'}" class="w-auto" v-model="value" :items="items"></USelect></th>
+            <th class="p-4 text-center">wyjście <USelect :ui="{ content: 'w-auto min-w-(--reka-select-trigger-width)'}" class="w-auto" v-model="reson" :items="items"></USelect></th>
             <th class="p-4 text-center">powrót</th>
           </tr>
         </thead>
