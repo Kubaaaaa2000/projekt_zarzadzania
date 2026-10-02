@@ -138,7 +138,7 @@ async function zarejestrujPowrot(wpisId: number) {
       <UButton
         class="bg-[#00dc82] hover:bg-[#00b368] disabled:bg-gray-300 text-white border-none py-2.5 px-4 rounded-md font-bold cursor-pointer transition-colors duration-200 disabled:cursor-not-allowed"
         :disabled="pending"
-        @click="refresh"
+        @click="odswiezRejestr"
       >
         {{ pending ? 'Ładowanie...' : 'Odśwież' }}
       </UButton>
