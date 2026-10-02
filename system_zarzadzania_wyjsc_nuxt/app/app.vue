@@ -244,7 +244,7 @@ function toggleColor() {
       </template>
     </UHeader>
   <NuxtPage></NuxtPage>
-  <USidebar v-show="loggedIn" v-model:open="open" :mode="mode" title="Navigation">
+  <USidebar v-show="loggedIn" v-model:open="open" :mode="mode" title="Nawigacja" >
     <UNavigationMenu
       v-show="loggedIn"
       :items="items"
